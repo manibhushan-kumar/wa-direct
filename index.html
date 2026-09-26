@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#25D366">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="WhatsApp Chat">
+<title>WhatsApp Chat</title>
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(145deg, #e9fff2, #f7f7f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #172b22;
+  }
+  .card {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 24px;
+    padding: 28px 22px 24px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.10);
+  }
+  .logo {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: #25D366;
+    color: white;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 16px;
+    font-size: 34px;
+    font-weight: 700;
+  }
+  h1 {
+    text-align: center;
+    margin: 0 0 8px;
+    font-size: 25px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #66736d;
+    margin: 0 0 25px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 7px;
+  }
+  .phone-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  select, input {
+    height: 52px;
+    border: 1px solid #d7ddd9;
+    border-radius: 13px;
+    background: #fff;
+    font-size: 16px;
+    outline: none;
+  }
+  select {
+    width: 105px;
+    padding: 0 8px;
+  }
+  input {
+    flex: 1;
+    min-width: 0;
+    padding: 0 14px;
+  }
+  select:focus, input:focus {
+    border-color: #25D366;
+    box-shadow: 0 0 0 3px rgba(37,211,102,.12);
+  }
+  button {
+    width: 100%;
+    height: 54px;
+    border: 0;
+    border-radius: 14px;
+    background: #25D366;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(37,211,102,.25);
+  }
+  button:active { transform: scale(.99); }
+  .hint {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 12px;
+    color: #7a8580;
+    line-height: 1.5;
+  }
+  .error {
+    color: #d93025;
+    font-size: 13px;
+    min-height: 18px;
+    margin: -6px 0 10px;
+  }
+  .recent {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 16px;
+  }
+  .recent-title {
+    font-size: 12px;
+    color: #78817d;
+    margin-bottom: 8px;
+  }
+  .recent-number {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f6f8f7;
+    border-radius: 10px;
+    padding: 9px 11px;
+    font-size: 13px;
+  }
+  .clear {
+    border: 0;
+    background: transparent;
+    color: #d93025;
+    box-shadow: none;
+    width: auto;
+    height: auto;
+    font-size: 12px;
+    padding: 3px;
+  }
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#25D366">
+</head>
+<body>
+<main class="card">
+  <div class="logo">⌕</div>
+  <h1>Open WhatsApp Chat</h1>
+  <p class="subtitle">Start a WhatsApp conversation without saving the number.</p>
+
+  <label for="number">Phone number</label>
+  <div class="phone-row">
+    <select id="country" aria-label="Country code">
+      <option value="91" selected>🇮🇳 +91</option>
+      <option value="1">🇺🇸 +1</option>
+      <option value="44">🇬🇧 +44</option>
+      <option value="61">🇦🇺 +61</option>
+      <option value="971">🇦🇪 +971</option>
+      <option value="65">🇸🇬 +65</option>
+      <option value="81">🇯🇵 +81</option>
+      <option value="49">🇩🇪 +49</option>
+      <option value="33">🇫🇷 +33</option>
+    </select>
+    <input id="number" type="tel" inputmode="numeric"
+           placeholder="98765 43210" autocomplete="tel"
+           aria-label="Phone number">
+  </div>
+
+  <div id="error" class="error"></div>
+  <button id="openBtn">💬 Open WhatsApp Chat</button>
+
+  <p class="hint">
+    Enter the number without the country code.<br>
+    The number will not be saved to your contacts.
+  </p>
+
+  <section class="recent" id="recent" hidden>
+    <div class="recent-title">Last used number</div>
+    <div class="recent-number">
+      <span id="recentText"></span>
+      <button class="clear" id="clearBtn">Clear</button>
+    </div>
+  </section>
+</main>
+
+<script>
+const numberInput = document.getElementById('number');
+const country = document.getElementById('country');
+const error = document.getElementById('error');
+const recent = document.getElementById('recent');
+const recentText = document.getElementById('recentText');
+
+function cleanNumber(value) {
+  return value.replace(/\D/g, '');
+}
+
+function openWhatsApp() {
+  const number = cleanNumber(numberInput.value);
+  error.textContent = '';
+
+  if (!number) {
+    error.textContent = 'Please enter a phone number.';
+    numberInput.focus();
+    return;
+  }
+
+  if (number.length < 6 || number.length > 15) {
+    error.textContent = 'Please enter a valid phone number.';
+    numberInput.focus();
+    return;
+  }
+
+  const fullNumber = country.value + number;
+  localStorage.setItem('lastWhatsAppNumber', fullNumber);
+
+  // wa.me opens the WhatsApp app when available, otherwise WhatsApp Web.
+  window.location.href = 'https://wa.me/' + fullNumber;
+}
+
+document.getElementById('openBtn').addEventListener('click', openWhatsApp);
+
+numberInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') openWhatsApp();
+});
+
+numberInput.addEventListener('input', () => {
+  error.textContent = '';
+});
+
+function showRecent() {
+  const saved = localStorage.getItem('lastWhatsAppNumber');
+  if (saved) {
+    recent.hidden = false;
+    recentText.textContent = '+' + saved;
+  }
+}
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  localStorage.removeItem('lastWhatsAppNumber');
+  recent.hidden = true;
+});
+
+showRecent();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+}
+</script>
+</body>
+</html>
